@@ -46,14 +46,19 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes p2{0%,100%{opacity:0.6}50%{opacity:1}}
-@keyframes slash-h{0%{transform:rotate(-40deg) translateX(-120%) scaleX(0.2);opacity:0}30%{opacity:1;transform:rotate(-40deg) translateX(0%) scaleX(1)}70%{opacity:0.8;transform:rotate(-40deg) translateX(30%) scaleX(0.8)}100%{transform:rotate(-40deg) translateX(120%) scaleX(0.2);opacity:0}}
-@keyframes slash-h2{0%{transform:rotate(35deg) translateX(120%) scaleX(0.2);opacity:0}30%{opacity:1;transform:rotate(35deg) translateX(0%) scaleX(1)}70%{opacity:0.8;transform:rotate(35deg) translateX(-30%) scaleX(0.8)}100%{transform:rotate(35deg) translateX(-120%) scaleX(0.2);opacity:0}}
-@keyframes slash-v{0%{transform:translateY(-100%) scaleY(0.1);opacity:0}30%{opacity:1;transform:translateY(0%) scaleY(1)}70%{opacity:0.8}100%{transform:translateY(100%) scaleY(0.1);opacity:0}}
-@keyframes glow-pulse{0%,100%{box-shadow:0 0 30px rgba(0,219,231,0.3),0 0 60px rgba(87,27,193,0.15)}50%{box-shadow:0 0 80px rgba(0,219,231,0.7),0 0 120px rgba(87,27,193,0.4),0 0 160px rgba(0,219,231,0.3)}}
-@keyframes energy-ring{0%{transform:scale(0.85);opacity:0.9}100%{transform:scale(1.5);opacity:0}}
-@keyframes float-spark{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(-100px) rotate(360deg) scale(0);opacity:0}}
-@keyframes beam-lr{0%{transform:translateY(-50%) scaleY(0.1);opacity:0}25%{opacity:1;transform:translateY(-50%) scaleY(1)}75%{opacity:0.9;transform:translateY(-50%) scaleY(1)}100%{transform:translateY(-50%) scaleY(0.1);opacity:0}}
-@keyframes beam-flicker{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:0.7;filter:brightness(1.5)}}
+/* Haki Lightning */
+.sword-container{position:relative;width:100%;height:500px;overflow:hidden;border-radius:24px}
+.sword-container::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 70%,rgba(120,0,255,0.45),transparent 65%);animation:haki-pulse 2s ease-in-out infinite;z-index:1;pointer-events:none;border-radius:24px}
+.zoro-img{width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;z-index:2;filter:brightness(0.9) saturate(1.3)}
+.haki-lightning{position:absolute;width:8px;height:180px;background:linear-gradient(transparent,#9b5cff,#ffffff,#00eaff,transparent);filter:drop-shadow(0 0 15px #8a2cff) drop-shadow(0 0 40px #00ffff);opacity:0;z-index:5;animation:haki 1.2s ease-in-out infinite}
+.lightning-1{left:42%;top:30%;transform:rotate(-35deg)}
+.lightning-2{left:55%;top:35%;transform:rotate(40deg);animation-delay:.3s}
+.lightning-3{left:48%;top:18%;transform:rotate(5deg);animation-delay:.6s}
+.lightning-4{left:30%;top:40%;transform:rotate(-55deg);animation-delay:.15s}
+.lightning-5{left:62%;top:25%;transform:rotate(25deg);animation-delay:.45s}
+.lightning-6{left:38%;top:55%;transform:rotate(-20deg);animation-delay:.75s}
+@keyframes haki{0%{opacity:0;transform:scale(.5) rotate(0deg)}30%{opacity:1}60%{opacity:.8;transform:scale(1.3) rotate(15deg)}100%{opacity:0;transform:scale(.5)}}
+@keyframes haki-pulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
 </style>
 </head>
 <body>
@@ -94,8 +99,6 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
   <div style="position:absolute;inset:0;background:linear-gradient(to top,#020202 0%,transparent 40%);z-index:2"></div>
   <!-- Grid overlay -->
   <div class="grid-bg" style="position:absolute;inset:0;opacity:0.4;z-index:3"></div>
-  <!-- Sword slash canvas -->
-  <canvas id="swordCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none"></canvas>
 
   <div class="max-w-6xl mx-auto px-5 w-full relative" style="z-index:10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-120px)]">
@@ -127,47 +130,15 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
           <div><div class="font-display text-2xl font-bold">24/7</div><div class="font-mono text-[11px] text-[#849495] mt-0.5">Autonomous Ops</div></div>
         </div>
       </div>
-      <!-- Hero Image with Sword Effects -->
-      <div class="hidden lg:flex items-center justify-center relative h-[500px]">
-        <!-- Glow pulse border -->
-        <div style="position:absolute;inset:0;border-radius:24px;animation:glow-pulse 2s ease-in-out infinite;z-index:1;pointer-events:none"></div>
-
-        <!-- Energy rings — terus mengembang -->
-        <div style="position:absolute;inset:-10px;border-radius:30px;border:2px solid rgba(0,219,231,0.5);animation:energy-ring 2s ease-out infinite;z-index:2;pointer-events:none"></div>
-        <div style="position:absolute;inset:-10px;border-radius:30px;border:2px solid rgba(0,219,231,0.4);animation:energy-ring 2s ease-out infinite 0.66s;z-index:2;pointer-events:none"></div>
-        <div style="position:absolute;inset:-10px;border-radius:30px;border:2px solid rgba(87,27,193,0.5);animation:energy-ring 2s ease-out infinite 1.33s;z-index:2;pointer-events:none"></div>
-
-        <!-- Sword beam KIRI — terus -->
-        <div style="position:absolute;left:-5px;top:50%;width:5px;height:65%;background:linear-gradient(to bottom,transparent,#00dbe7 30%,#00dbe7 70%,transparent);border-radius:4px;animation:beam-lr 1.8s ease-in-out infinite,beam-flicker 0.6s ease-in-out infinite;z-index:5;box-shadow:0 0 15px #00dbe7,0 0 40px rgba(0,219,231,0.7)"></div>
-        <!-- Sword beam KANAN — terus, offset -->
-        <div style="position:absolute;right:-5px;top:50%;width:5px;height:65%;background:linear-gradient(to bottom,transparent,#00dbe7 30%,#00dbe7 70%,transparent);border-radius:4px;animation:beam-lr 1.8s ease-in-out infinite 0.9s,beam-flicker 0.6s ease-in-out infinite 0.3s;z-index:5;box-shadow:0 0 15px #00dbe7,0 0 40px rgba(0,219,231,0.7)"></div>
-        <!-- Sword beam ATAS — terus -->
-        <div style="position:absolute;top:-5px;left:50%;width:55%;height:5px;transform:translateX(-50%);background:linear-gradient(to right,transparent,#571bc1 20%,#00dbe7 50%,#571bc1 80%,transparent);border-radius:4px;animation:beam-flicker 0.8s ease-in-out infinite,beam-lr 2s ease-in-out infinite 0.4s;z-index:5;box-shadow:0 0 15px #00dbe7,0 0 40px rgba(0,219,231,0.6)"></div>
-
-        <!-- Slash melintang — sweep kiri ke kanan terus -->
-        <div style="position:absolute;top:22%;left:0;width:180px;height:2.5px;background:linear-gradient(to right,transparent,#00dbe7,rgba(163,230,53,0.8),transparent);animation:slash-h 1.5s linear infinite;z-index:6;box-shadow:0 0 10px rgba(0,219,231,0.9)"></div>
-        <div style="position:absolute;bottom:28%;right:0;width:150px;height:2px;background:linear-gradient(to left,transparent,#d0bcff,#00dbe7,transparent);animation:slash-h2 1.8s linear infinite 0.5s;z-index:6;box-shadow:0 0 10px rgba(208,188,255,0.9)"></div>
-        <div style="position:absolute;top:50%;left:0;width:130px;height:1.5px;background:linear-gradient(to right,transparent,rgba(0,219,231,0.8),transparent);animation:slash-h 2.2s linear infinite 1s;z-index:6"></div>
-        <div style="position:absolute;top:65%;right:0;width:100px;height:1.5px;background:linear-gradient(to left,transparent,rgba(87,27,193,0.9),transparent);animation:slash-h2 1.6s linear infinite 0.8s;z-index:6"></div>
-
-        <!-- Sparks terbang terus ke atas -->
-        <div style="position:absolute;bottom:25%;left:18%;width:5px;height:5px;border-radius:50%;background:#00dbe7;box-shadow:0 0 10px #00dbe7,0 0 20px rgba(0,219,231,0.5);animation:float-spark 1.5s ease-out infinite;z-index:7"></div>
-        <div style="position:absolute;bottom:35%;left:28%;width:3px;height:3px;border-radius:50%;background:#d0bcff;box-shadow:0 0 8px #d0bcff;animation:float-spark 1.8s ease-out infinite 0.3s;z-index:7"></div>
-        <div style="position:absolute;bottom:20%;right:22%;width:5px;height:5px;border-radius:50%;background:#00dbe7;box-shadow:0 0 10px #00dbe7;animation:float-spark 1.6s ease-out infinite 0.6s;z-index:7"></div>
-        <div style="position:absolute;bottom:45%;right:18%;width:3px;height:3px;border-radius:50%;background:#a3e635;box-shadow:0 0 8px #a3e635;animation:float-spark 2s ease-out infinite 0.9s;z-index:7"></div>
-        <div style="position:absolute;bottom:30%;left:45%;width:4px;height:4px;border-radius:50%;background:#00dbe7;box-shadow:0 0 10px #00dbe7;animation:float-spark 1.4s ease-out infinite 1.2s;z-index:7"></div>
-        <div style="position:absolute;bottom:55%;right:32%;width:4px;height:4px;border-radius:50%;background:#a3e635;box-shadow:0 0 8px #a3e635;animation:float-spark 1.7s ease-out infinite 0.4s;z-index:7"></div>
-        <div style="position:absolute;bottom:40%;left:12%;width:3px;height:3px;border-radius:50%;background:#d0bcff;box-shadow:0 0 6px #d0bcff;animation:float-spark 2.1s ease-out infinite 1.5s;z-index:7"></div>
-        <div style="position:absolute;bottom:15%;right:40%;width:5px;height:5px;border-radius:50%;background:#00dbe7;box-shadow:0 0 12px #00dbe7;animation:float-spark 1.3s ease-out infinite 0.7s;z-index:7"></div>
-
-        <!-- Main image — DIAM (no movement) -->
-        <div style="position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;border:1px solid rgba(0,219,231,0.25);z-index:3">
-          <img src="hero.png" alt="MYCAL — Builder vs Complexity" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.9) saturate(1.3)"/>
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(2,2,2,0.65) 0%,transparent 50%)"></div>
-          <div style="position:absolute;bottom:20px;left:20px">
-            <span class="font-mono text-[11px] text-[#00dbe7] tracking-widest" style="opacity:0.8;text-shadow:0 0 10px rgba(0,219,231,0.8)">BUILDER VS COMPLEXITY</span>
-          </div>
-        </div>
+      <!-- Hero Image — Haki Lightning -->
+      <div class="sword-container hidden lg:flex items-center justify-center">
+        <img src="hero.png" class="zoro-img" alt="MYCAL — Builder vs Complexity"/>
+        <div class="haki-lightning lightning-1"></div>
+        <div class="haki-lightning lightning-2"></div>
+        <div class="haki-lightning lightning-3"></div>
+        <div class="haki-lightning lightning-4"></div>
+        <div class="haki-lightning lightning-5"></div>
+        <div class="haki-lightning lightning-6"></div>
       </div>
     </div>
   </div>
@@ -464,112 +435,6 @@ function tp(id){const p=document.getElementById(id),a=document.getElementById(id
 document.querySelectorAll('.proj-body').forEach(x=>x.classList.remove('open'));
 document.querySelectorAll('[id$="-a"]').forEach(x=>{x.style.transform='';x.style.color='#849495'});
 if(!o){p.classList.add('open');a.style.transform='rotate(180deg)';a.style.color='#00dbe7'}}
-// Sword Slash Canvas Engine
-(function(){
-  const cv=document.getElementById('swordCanvas');
-  if(!cv)return;
-  const ctx=cv.getContext('2d');
-  function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
-  resize();window.addEventListener('resize',resize);
-
-  const slashes=[];
-  const sparks=[];
-
-  function randBetween(a,b){return a+Math.random()*(b-a);}
-
-  function spawnSlash(){
-    const type=Math.floor(Math.random()*3);
-    const w=cv.width, h=cv.height;
-    let x1,y1,x2,y2;
-    if(type===0){// diagonal top-left to bottom-right
-      x1=randBetween(-100,w*0.4); y1=randBetween(-50,h*0.3);
-      x2=x1+randBetween(300,600); y2=y1+randBetween(150,350);
-    } else if(type===1){// diagonal top-right to bottom-left
-      x1=randBetween(w*0.6,w+100); y1=randBetween(-50,h*0.3);
-      x2=x1-randBetween(300,600); y2=y1+randBetween(150,350);
-    } else {// near horizontal slash
-      x1=randBetween(-50,w*0.2); y1=randBetween(h*0.2,h*0.8);
-      x2=x1+randBetween(400,w); y2=y1+randBetween(-80,80);
-    }
-    const colors=['#00dbe7','#a3e635','#d0bcff','#00ff88'];
-    const c=colors[Math.floor(Math.random()*colors.length)];
-    slashes.push({x1,y1,x2,y2,life:1,decay:randBetween(0.03,0.07),color:c,width:randBetween(1.5,3.5),spawned:false});
-  }
-
-  function spawnSparks(x,y,color,count){
-    for(let i=0;i<count;i++){
-      const angle=Math.random()*Math.PI*2;
-      const speed=randBetween(1,5);
-      sparks.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-2,life:1,decay:randBetween(0.02,0.05),color,size:randBetween(1,3)});
-    }
-  }
-
-  let lastSlash=0;
-  function loop(ts){
-    ctx.clearRect(0,0,cv.width,cv.height);
-
-    // spawn new slash
-    if(ts-lastSlash>randBetween(300,700)){
-      spawnSlash();
-      lastSlash=ts;
-    }
-
-    // draw slashes
-    for(let i=slashes.length-1;i>=0;i--){
-      const s=slashes[i];
-      s.life-=s.decay;
-      if(s.life<=0){slashes.splice(i,1);continue;}
-
-      const alpha=s.life>0.7?1:(s.life/0.7);
-      ctx.save();
-      ctx.globalAlpha=alpha;
-      ctx.strokeStyle=s.color;
-      ctx.lineWidth=s.width;
-      ctx.shadowColor=s.color;
-      ctx.shadowBlur=20;
-      ctx.lineCap='round';
-      ctx.beginPath();
-      ctx.moveTo(s.x1,s.y1);
-      ctx.lineTo(s.x2,s.y2);
-      ctx.stroke();
-      // bright core
-      ctx.lineWidth=s.width*0.4;
-      ctx.strokeStyle='#ffffff';
-      ctx.shadowBlur=8;
-      ctx.stroke();
-      ctx.restore();
-
-      // spawn sparks once at peak
-      if(!s.spawned&&s.life<0.85){
-        s.spawned=true;
-        const mx=(s.x1+s.x2)/2, my=(s.y1+s.y2)/2;
-        spawnSparks(mx,my,s.color,8);
-        spawnSparks(s.x1,s.y1,s.color,4);
-        spawnSparks(s.x2,s.y2,s.color,4);
-      }
-    }
-
-    // draw sparks
-    for(let i=sparks.length-1;i>=0;i--){
-      const p=sparks[i];
-      p.x+=p.vx; p.y+=p.vy; p.vy+=0.1;
-      p.life-=p.decay;
-      if(p.life<=0){sparks.splice(i,1);continue;}
-      ctx.save();
-      ctx.globalAlpha=p.life;
-      ctx.fillStyle=p.color;
-      ctx.shadowColor=p.color;
-      ctx.shadowBlur=10;
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-})();
 
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{nav.style.paddingTop=window.scrollY>60?'8px':'16px'});

@@ -89,11 +89,13 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 <!-- HERO -->
 <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-24">
   <!-- Cinematic BG -->
-  <div id="heroBg" style="position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center;transition:transform 0.1s ease-out;will-change:transform"></div>
+  <div id="heroBg" style="position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(2,2,2,0.75) 0%,rgba(2,2,2,0.55) 50%,rgba(2,2,2,0.80) 100%);z-index:1"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(to top,#020202 0%,transparent 40%);z-index:2"></div>
   <!-- Grid overlay -->
   <div class="grid-bg" style="position:absolute;inset:0;opacity:0.4;z-index:3"></div>
+  <!-- Sword slash canvas -->
+  <canvas id="swordCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none"></canvas>
 
   <div class="max-w-6xl mx-auto px-5 w-full relative" style="z-index:10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[calc(100vh-120px)]">
@@ -462,6 +464,113 @@ function tp(id){const p=document.getElementById(id),a=document.getElementById(id
 document.querySelectorAll('.proj-body').forEach(x=>x.classList.remove('open'));
 document.querySelectorAll('[id$="-a"]').forEach(x=>{x.style.transform='';x.style.color='#849495'});
 if(!o){p.classList.add('open');a.style.transform='rotate(180deg)';a.style.color='#00dbe7'}}
+// Sword Slash Canvas Engine
+(function(){
+  const cv=document.getElementById('swordCanvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  const slashes=[];
+  const sparks=[];
+
+  function randBetween(a,b){return a+Math.random()*(b-a);}
+
+  function spawnSlash(){
+    const type=Math.floor(Math.random()*3);
+    const w=cv.width, h=cv.height;
+    let x1,y1,x2,y2;
+    if(type===0){// diagonal top-left to bottom-right
+      x1=randBetween(-100,w*0.4); y1=randBetween(-50,h*0.3);
+      x2=x1+randBetween(300,600); y2=y1+randBetween(150,350);
+    } else if(type===1){// diagonal top-right to bottom-left
+      x1=randBetween(w*0.6,w+100); y1=randBetween(-50,h*0.3);
+      x2=x1-randBetween(300,600); y2=y1+randBetween(150,350);
+    } else {// near horizontal slash
+      x1=randBetween(-50,w*0.2); y1=randBetween(h*0.2,h*0.8);
+      x2=x1+randBetween(400,w); y2=y1+randBetween(-80,80);
+    }
+    const colors=['#00dbe7','#a3e635','#d0bcff','#00ff88'];
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    slashes.push({x1,y1,x2,y2,life:1,decay:randBetween(0.03,0.07),color:c,width:randBetween(1.5,3.5),spawned:false});
+  }
+
+  function spawnSparks(x,y,color,count){
+    for(let i=0;i<count;i++){
+      const angle=Math.random()*Math.PI*2;
+      const speed=randBetween(1,5);
+      sparks.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-2,life:1,decay:randBetween(0.02,0.05),color,size:randBetween(1,3)});
+    }
+  }
+
+  let lastSlash=0;
+  function loop(ts){
+    ctx.clearRect(0,0,cv.width,cv.height);
+
+    // spawn new slash
+    if(ts-lastSlash>randBetween(300,700)){
+      spawnSlash();
+      lastSlash=ts;
+    }
+
+    // draw slashes
+    for(let i=slashes.length-1;i>=0;i--){
+      const s=slashes[i];
+      s.life-=s.decay;
+      if(s.life<=0){slashes.splice(i,1);continue;}
+
+      const alpha=s.life>0.7?1:(s.life/0.7);
+      ctx.save();
+      ctx.globalAlpha=alpha;
+      ctx.strokeStyle=s.color;
+      ctx.lineWidth=s.width;
+      ctx.shadowColor=s.color;
+      ctx.shadowBlur=20;
+      ctx.lineCap='round';
+      ctx.beginPath();
+      ctx.moveTo(s.x1,s.y1);
+      ctx.lineTo(s.x2,s.y2);
+      ctx.stroke();
+      // bright core
+      ctx.lineWidth=s.width*0.4;
+      ctx.strokeStyle='#ffffff';
+      ctx.shadowBlur=8;
+      ctx.stroke();
+      ctx.restore();
+
+      // spawn sparks once at peak
+      if(!s.spawned&&s.life<0.85){
+        s.spawned=true;
+        const mx=(s.x1+s.x2)/2, my=(s.y1+s.y2)/2;
+        spawnSparks(mx,my,s.color,8);
+        spawnSparks(s.x1,s.y1,s.color,4);
+        spawnSparks(s.x2,s.y2,s.color,4);
+      }
+    }
+
+    // draw sparks
+    for(let i=sparks.length-1;i>=0;i--){
+      const p=sparks[i];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.1;
+      p.life-=p.decay;
+      if(p.life<=0){sparks.splice(i,1);continue;}
+      ctx.save();
+      ctx.globalAlpha=p.life;
+      ctx.fillStyle=p.color;
+      ctx.shadowColor=p.color;
+      ctx.shadowBlur=10;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{nav.style.paddingTop=window.scrollY>60?'8px':'16px'});
 const secs=document.querySelectorAll('section[id]');

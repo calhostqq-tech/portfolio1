@@ -51,14 +51,20 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 .sword-container{position:relative;width:100%;height:480px;overflow:hidden;border-radius:30px;background:#050505}
 .sword-container::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 75%,rgba(120,0,255,0.4),transparent 60%);animation:haki-pulse 2s ease-in-out infinite;z-index:1;pointer-events:none}
 .zoro-img{width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;z-index:2;filter:brightness(0.88) saturate(1.4)}
-.haki{position:absolute;inset:0;pointer-events:none;z-index:5}
-.haki svg{position:absolute;width:90px;height:220px;filter:drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 20px #7c3aed);opacity:.65;animation:flash .35s infinite alternate}
-.haki svg:first-child{left:42%;top:20%}
-.haki svg:last-child{right:38%;top:15%;animation-delay:.2s}
-.haki path{fill:none;stroke:#eaffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:180;animation:spark .25s linear infinite}
-@keyframes spark{to{stroke-dashoffset:-180}}
-@keyframes flash{from{opacity:.25;transform:scale(.8)}to{opacity:.9;transform:scale(1.1)}}
-@keyframes haki-pulse{0%,100%{opacity:0.4}50%{opacity:0.85;transform:scale(1.05)}}
+.haki{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:visible}
+.haki svg{position:absolute;overflow:visible;animation:hakiFlash .3s infinite alternate}
+/* Pedang kanan — tip kat kanan tengah */
+.haki .br{right:2%;top:28%;width:140px;height:230px;filter:drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 28px #ffd700) drop-shadow(0 0 50px #7c3aed)}
+/* Pedang kiri — tip kat kiri tengah */
+.haki .bl{left:2%;top:28%;width:140px;height:230px;filter:drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 28px #ffd700) drop-shadow(0 0 50px #7c3aed);animation-delay:.15s}
+/* Pedang mulut — atas tengah */
+.haki .bm{left:38%;top:2%;width:95px;height:145px;filter:drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 22px #fff) drop-shadow(0 0 40px #7c3aed);animation-delay:.08s}
+/* Outer tebal hitam */
+.haki .out{fill:none;stroke:#0a0015;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;animation:hakiDraw .28s linear infinite}
+/* Inner tipis putih/emas */
+.haki .inn{fill:none;stroke:#fff9e0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;animation:hakiDraw .28s linear infinite}
+@keyframes hakiDraw{0%{stroke-dashoffset:400}100%{stroke-dashoffset:-400}}
+@keyframes hakiFlash{from{opacity:.5}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -143,11 +149,28 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
           <div class="sword-container">
             <img src="hero.png" class="zoro-img" alt="MYCAL — Builder vs Complexity"/>
             <div class="haki">
-              <svg viewBox="0 0 100 200">
-                <path d="M60 0 L35 55 L55 55 L20 120 L45 120 L30 200"/>
+              <!-- Pedang KANAN — crack keluar ke kanan dari tip pedang -->
+              <svg class="br" viewBox="0 0 140 230">
+                <path class="out" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
+                <path class="inn" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
+                <!-- Cabang bawah -->
+                <path class="out" d="M55 135 L70 170 L50 165 L65 210"/>
+                <path class="inn" d="M55 135 L70 170 L50 165 L65 210"/>
               </svg>
-              <svg viewBox="0 0 100 200">
-                <path d="M40 10 L70 70 L50 70 L80 150 L55 150 L70 200"/>
+              <!-- Pedang KIRI — flip, crack keluar ke kiri -->
+              <svg class="bl" viewBox="0 0 140 230" style="transform:scaleX(-1)">
+                <path class="out" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
+                <path class="inn" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
+                <path class="out" d="M55 135 L70 170 L50 165 L65 210"/>
+                <path class="inn" d="M55 135 L70 170 L50 165 L65 210"/>
+              </svg>
+              <!-- Pedang MULUT — crack naik ke atas -->
+              <svg class="bm" viewBox="0 0 95 145">
+                <path class="out" d="M47 140 L25 100 L48 105 L18 55 L44 65 L28 20 L50 30 L40 0"/>
+                <path class="inn" d="M47 140 L25 100 L48 105 L18 55 L44 65 L28 20 L50 30 L40 0"/>
+                <!-- Cabang kiri -->
+                <path class="out" d="M28 20 L10 5 L18 15"/>
+                <path class="inn" d="M28 20 L10 5 L18 15"/>
               </svg>
             </div>
           </div>

@@ -88,8 +88,10 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 
 <!-- HERO -->
 <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-24">
-  <!-- Ambient BG — 20% opacity -->
-  <div style="position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center;opacity:0.18;z-index:0"></div>
+  <!-- Ambient BG — 15% opacity -->
+  <div style="position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center;opacity:0.12;z-index:0"></div>
+  <!-- Particles -->
+  <canvas id="particles" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none"></canvas>
   <!-- Dark base -->
   <div style="position:absolute;inset:0;background:#050505;z-index:-1"></div>
   <!-- Radial glow -->
@@ -215,6 +217,78 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto px-5"></div>
+
+<!-- SYSTEMS I BUILD -->
+<section class="py-24 px-5 relative">
+  <div class="max-w-6xl mx-auto space-y-14">
+    <div class="text-center space-y-3 reveal">
+      <div class="slabel mx-auto justify-center">Architecture</div>
+      <h2 class="font-display" style="font-size:clamp(24px,3.5vw,48px);font-weight:700;letter-spacing:-0.03em">Systems I Build</h2>
+      <p class="font-body text-[16px] text-[#849495] max-w-md mx-auto">Production-grade architecture. Not tutorials — real deployed systems.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- AI Agents -->
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#00dbe7]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#00dbe7]" style="font-size:22px;font-variation-settings:'FILL' 1">psychology</span></div>
+          <h3 class="font-display text-[18px] font-semibold">AI Agents</h3>
+        </div>
+        <div class="font-mono text-[12px] space-y-2 text-[#849495]">
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">LLM Orchestration</span><br/><span class="text-[10px]">GPT-4o · Claude · Gemini · multi-model routing</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">Tool Use & Function Calling</span><br/><span class="text-[10px]">API calls · web search · code exec · file ops</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">Memory & RAG</span><br/><span class="text-[10px]">Vector DB · semantic search · persistent context</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">└──</span><div><span class="text-[#e5e2e1]">Autonomous Pipelines</span><br/><span class="text-[10px]">Multi-agent · self-healing · decision trees</span></div></div>
+        </div>
+      </div>
+
+      <!-- Automation -->
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal d1">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#d0bcff]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#d0bcff]" style="font-size:22px;font-variation-settings:'FILL' 1">account_tree</span></div>
+          <h3 class="font-display text-[18px] font-semibold">Automation</h3>
+        </div>
+        <div class="font-mono text-[12px] space-y-2 text-[#849495]">
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">Workflow Engine</span><br/><span class="text-[10px]">n8n · Zapier · Make · custom Node.js triggers</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">API Integration</span><br/><span class="text-[10px]">REST · GraphQL · webhooks · OAuth flows</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">CRM & Data Pipelines</span><br/><span class="text-[10px]">HubSpot · Airtable · Supabase · Google Sheets</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">└──</span><div><span class="text-[#e5e2e1]">Messaging Automation</span><br/><span class="text-[10px]">WhatsApp API · Telegram · Email · SMS</span></div></div>
+        </div>
+      </div>
+
+      <!-- Full Stack -->
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal d2">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#00dbe7]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#00dbe7]" style="font-size:22px;font-variation-settings:'FILL' 1">code_blocks</span></div>
+          <h3 class="font-display text-[18px] font-semibold">Full Stack</h3>
+        </div>
+        <div class="font-mono text-[12px] space-y-2 text-[#849495]">
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">Frontend</span><br/><span class="text-[10px]">React · Next.js · React Native · Tailwind</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">Backend</span><br/><span class="text-[10px]">Node.js · Python · FastAPI · Express</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">├──</span><div><span class="text-[#e5e2e1]">Database</span><br/><span class="text-[10px]">PostgreSQL · Supabase · MongoDB · Redis</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#00dbe7]">└──</span><div><span class="text-[#e5e2e1]">Deploy</span><br/><span class="text-[10px]">Vercel · Railway · Docker · GCP</span></div></div>
+        </div>
+      </div>
+
+      <!-- Data & Analytics -->
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal d3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#d0bcff]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#d0bcff]" style="font-size:22px;font-variation-settings:'FILL' 1">bar_chart</span></div>
+          <h3 class="font-display text-[18px] font-semibold">Data & Analytics</h3>
+        </div>
+        <div class="font-mono text-[12px] space-y-2 text-[#849495]">
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">Ad Analytics</span><br/><span class="text-[10px]">Meta Ads API · Google Ads · dashboard build</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">AI Insights</span><br/><span class="text-[10px]">Auto-reporting · anomaly detection · GPT summaries</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">├──</span><div><span class="text-[#e5e2e1]">Data Pipeline</span><br/><span class="text-[10px]">ETL · real-time sync · scheduled jobs</span></div></div>
+          <div class="flex items-start gap-3"><span class="text-[#d0bcff]">└──</span><div><span class="text-[#e5e2e1]">Visualization</span><br/><span class="text-[10px]">React charts · custom dashboards · KPI tracking</span></div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -396,6 +470,49 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 
 <div class="divider max-w-6xl mx-auto px-5"></div>
 
+<!-- AI LAB -->
+<section class="py-24 px-5 relative">
+  <div class="max-w-6xl mx-auto space-y-14">
+    <div class="text-center space-y-3 reveal">
+      <div class="slabel mx-auto justify-center" style="color:#d0bcff;--tw-border-color:#d0bcff">Lab</div>
+      <h2 class="font-display" style="font-size:clamp(24px,3.5vw,48px);font-weight:700;letter-spacing:-0.03em">AI <span class="tg">Demo Lab</span></h2>
+      <p class="font-body text-[16px] text-[#849495] max-w-md mx-auto">Live tools you can try right now. Built and deployed by me.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal flex flex-col">
+        <div class="w-12 h-12 rounded-xl bg-[#00dbe7]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#00dbe7]" style="font-size:28px;font-variation-settings:'FILL' 1">smart_toy</span></div>
+        <div class="flex-1"><h3 class="font-display text-[18px] font-semibold mb-2">Chat Agent</h3><p class="font-body text-[13px] text-[#849495]">Multi-tool AI agent with memory. Ask anything, it searches, reads, and responds autonomously.</p></div>
+        <div class="space-y-2">
+          <div class="glass rounded-lg px-3 py-2 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]" style="animation:p2 2s ease-in-out infinite"></span><span class="font-mono text-[11px] text-[#849495]">GPT-4o + Tool Calling</span></div>
+          <a href="mailto:calhostqq@gmail.com?subject=Demo Request: Chat Agent" class="flex items-center justify-center gap-2 bg-gradient-to-r from-[#00dbe7] to-[#571bc1] text-white font-mono text-[11px] px-4 py-2.5 rounded-xl hover:opacity-90 transition-all">Request Demo &rarr;</a>
+        </div>
+      </div>
+
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal d1 flex flex-col">
+        <div class="w-12 h-12 rounded-xl bg-[#d0bcff]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#d0bcff]" style="font-size:28px;font-variation-settings:'FILL' 1">account_tree</span></div>
+        <div class="flex-1"><h3 class="font-display text-[18px] font-semibold mb-2">Automation Demo</h3><p class="font-body text-[13px] text-[#849495]">Watch a live n8n workflow trigger in real-time — form submission to CRM to WhatsApp notification.</p></div>
+        <div class="space-y-2">
+          <div class="glass rounded-lg px-3 py-2 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]" style="animation:p2 2s ease-in-out infinite"></span><span class="font-mono text-[11px] text-[#849495]">n8n + WhatsApp API</span></div>
+          <a href="mailto:calhostqq@gmail.com?subject=Demo Request: Automation" class="flex items-center justify-center gap-2 bg-gradient-to-r from-[#d0bcff] to-[#571bc1] text-white font-mono text-[11px] px-4 py-2.5 rounded-xl hover:opacity-90 transition-all">Request Demo &rarr;</a>
+        </div>
+      </div>
+
+      <div class="glass glass-h rounded-2xl p-7 space-y-5 reveal d2 flex flex-col">
+        <div class="w-12 h-12 rounded-xl bg-[#00dbe7]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#00dbe7]" style="font-size:28px;font-variation-settings:'FILL' 1">bar_chart</span></div>
+        <div class="flex-1"><h3 class="font-display text-[18px] font-semibold mb-2">Ads Analyzer</h3><p class="font-body text-[13px] text-[#849495]">Paste your Meta Ads data — AI auto-generates performance insights and optimization recommendations.</p></div>
+        <div class="space-y-2">
+          <div class="glass rounded-lg px-3 py-2 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]" style="animation:p2 2s ease-in-out infinite"></span><span class="font-mono text-[11px] text-[#849495]">Meta API + GPT-4</span></div>
+          <a href="mailto:calhostqq@gmail.com?subject=Demo Request: Ads Analyzer" class="flex items-center justify-center gap-2 bg-gradient-to-r from-[#00dbe7] to-[#571bc1] text-white font-mono text-[11px] px-4 py-2.5 rounded-xl hover:opacity-90 transition-all">Request Demo &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider max-w-6xl mx-auto px-5"></div>
+
 <!-- CONTACT -->
 <section id="contact" class="py-32 px-5 relative">
   <div class="max-w-4xl mx-auto">
@@ -445,6 +562,37 @@ document.querySelectorAll('.proj-body').forEach(x=>x.classList.remove('open'));
 document.querySelectorAll('[id$="-a"]').forEach(x=>{x.style.transform='';x.style.color='#849495'});
 if(!o){p.classList.add('open');a.style.transform='rotate(180deg)';a.style.color='#00dbe7'}}
 
+// Particles
+(function(){
+  const c=document.getElementById('particles');if(!c)return;
+  const x=c.getContext('2d');
+  function r(){c.width=c.offsetWidth;c.height=c.offsetHeight;}r();
+  window.addEventListener('resize',r);
+  const pts=Array.from({length:55},()=>({
+    x:Math.random()*c.width,y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+    r:Math.random()*1.5+.5,
+    color:Math.random()>.5?'0,219,231':'208,188,255',
+    o:Math.random()*.5+.2
+  }));
+  function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>c.width)p.vx*=-1;
+      if(p.y<0||p.y>c.height)p.vy*=-1;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=`rgba(${p.color},${p.o})`;x.fill();
+      // connect nearby
+      pts.forEach(q=>{
+        const d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<120){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);
+        x.strokeStyle=`rgba(${p.color},${(.12*(1-d/120)).toFixed(2)})`;x.lineWidth=.5;x.stroke();}
+      });
+    });
+    requestAnimationFrame(draw);
+  }draw();
+})();
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{nav.style.paddingTop=window.scrollY>60?'8px':'16px'});
 const secs=document.querySelectorAll('section[id]');

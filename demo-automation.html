@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Automation Demo — MYCAL AI Lab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Geist:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box}body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;margin:0}
+.glass{background:rgba(10,10,10,0.6);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.08)}
+.tg{background:linear-gradient(135deg,#00dbe7,#d0bcff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.node{background:rgba(10,10,10,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;transition:all .3s}
+.node.active{border-color:#00dbe7;box-shadow:0 0 20px rgba(0,219,231,0.3);background:rgba(0,219,231,0.06)}
+.node.done{border-color:rgba(74,222,128,0.5);box-shadow:0 0 15px rgba(74,222,128,0.2);background:rgba(74,222,128,0.05)}
+.arrow{color:#849495;font-size:20px;text-align:center;line-height:1;margin:4px 0}
+.log-line{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:8px}
+@keyframes pulse2{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+</head>
+<body style="min-height:100vh;background:radial-gradient(circle at 20% 30%,rgba(87,27,193,0.08),transparent 40%),radial-gradient(circle at 80% 70%,rgba(0,219,231,0.06),transparent 40%),#020202">
+
+  <!-- Header -->
+  <nav class="glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 text-[#849495] hover:text-[#00dbe7] transition-colors">
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+      <span class="font-mono text-[12px]">Back to Portfolio</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#d0bcff] to-[#571bc1] flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings:'FILL' 1">account_tree</span>
+      </div>
+      <div>
+        <div class="font-mono text-[13px] font-bold">Automation Demo</div>
+        <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span><span class="font-mono text-[10px] text-[#4ade80]">n8n Engine Ready</span></div>
+      </div>
+    </div>
+    <div class="font-mono text-[11px] text-[#849495]">n8n · WhatsApp API · CRM</div>
+  </nav>
+
+  <div style="max-width:900px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+
+    <!-- Form -->
+    <div class="glass rounded-2xl p-6 space-y-5">
+      <div>
+        <div class="font-mono text-[11px] text-[#849495] mb-1">TRIGGER</div>
+        <h2 style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif">Submit a Lead</h2>
+        <p class="text-[13px] text-[#849495] mt-1">Watch the automation run live — form → CRM → WhatsApp → notification</p>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="font-mono text-[11px] text-[#849495] block mb-1.5">Name</label>
+          <input id="f-name" type="text" placeholder="Your name" class="w-full glass rounded-xl px-4 py-3 font-mono text-[13px] text-[#e5e2e1] outline-none border-transparent focus:border-[#00dbe7]/50 transition-all" style="background:rgba(255,255,255,0.03)"/>
+        </div>
+        <div>
+          <label class="font-mono text-[11px] text-[#849495] block mb-1.5">Business</label>
+          <input id="f-biz" type="text" placeholder="Your business" class="w-full glass rounded-xl px-4 py-3 font-mono text-[13px] text-[#e5e2e1] outline-none" style="background:rgba(255,255,255,0.03)"/>
+        </div>
+        <div>
+          <label class="font-mono text-[11px] text-[#849495] block mb-1.5">What do you need?</label>
+          <select id="f-need" class="w-full glass rounded-xl px-4 py-3 font-mono text-[13px] text-[#e5e2e1] outline-none" style="background:rgba(10,10,10,0.8)">
+            <option value="ai-agent">AI Agent System</option>
+            <option value="automation">n8n Automation</option>
+            <option value="whatsapp">WhatsApp Bot</option>
+            <option value="fullstack">Full Stack App</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="runDemo()" id="run-btn" class="w-full bg-gradient-to-r from-[#d0bcff] to-[#571bc1] text-white font-mono text-[13px] py-3.5 rounded-xl hover:opacity-90 hover:scale-[.98] transition-all flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">play_arrow</span>Trigger Workflow
+      </button>
+    </div>
+
+    <!-- Workflow visualizer -->
+    <div class="space-y-3">
+      <div class="font-mono text-[11px] text-[#849495]">WORKFLOW ENGINE</div>
+
+      <div class="node" id="n0"><span class="material-symbols-outlined text-[20px] text-[#849495]" style="font-variation-settings:'FILL' 1">web</span><div><div class="text-[#e5e2e1]">Form Trigger</div><div class="text-[10px] text-[#849495]">Webhook received</div></div></div>
+      <div class="arrow">↓</div>
+      <div class="node" id="n1"><span class="material-symbols-outlined text-[20px] text-[#849495]" style="font-variation-settings:'FILL' 1">psychology</span><div><div class="text-[#e5e2e1]">AI Qualifier</div><div class="text-[10px] text-[#849495]">GPT-4 lead scoring</div></div></div>
+      <div class="arrow">↓</div>
+      <div class="node" id="n2"><span class="material-symbols-outlined text-[20px] text-[#849495]" style="font-variation-settings:'FILL' 1">contact_page</span><div><div class="text-[#e5e2e1]">CRM Update</div><div class="text-[10px] text-[#849495]">HubSpot / Airtable</div></div></div>
+      <div class="arrow">↓</div>
+      <div class="node" id="n3"><span class="material-symbols-outlined text-[20px] text-[#849495]" style="font-variation-settings:'FILL' 1">forum</span><div><div class="text-[#e5e2e1]">WhatsApp Notify</div><div class="text-[10px] text-[#849495]">Instant alert to owner</div></div></div>
+      <div class="arrow">↓</div>
+      <div class="node" id="n4"><span class="material-symbols-outlined text-[20px] text-[#849495]" style="font-variation-settings:'FILL' 1">mail</span><div><div class="text-[#e5e2e1]">Auto Email</div><div class="text-[10px] text-[#849495]">Welcome sequence triggered</div></div></div>
+
+      <!-- Log -->
+      <div class="glass rounded-xl p-4 mt-2 h-32 overflow-y-auto" id="log">
+        <div class="log-line"><span class="text-[#849495]">--:--:--</span><span class="text-[#849495]">Waiting for trigger...</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="text-center font-mono text-[10px] text-[#849495] pb-8">Demo mode — simulated workflow. <a href="mailto:calhostqq@gmail.com" class="text-[#00dbe7] hover:underline">Contact MYCAL</a> for real deployment.</div>
+
+<script>
+const steps = [
+  {node:'n0', log:'Webhook received — form data parsed', color:'#00dbe7', delay:300},
+  {node:'n1', log:'GPT-4 analyzing lead quality... score: 8.5/10 ✓ HIGH VALUE', color:'#d0bcff', delay:1200},
+  {node:'n2', log:'CRM updated — new contact created with tags [AI, High-Value]', color:'#4ade80', delay:2200},
+  {node:'n3', log:'WhatsApp sent to +60112897... "New hot lead: ${name}"', color:'#4ade80', delay:3000},
+  {node:'n4', log:'Email sequence triggered — welcome email queued', color:'#4ade80', delay:3800},
+];
+function log(text, color) {
+  const l = document.getElementById('log');
+  const now = new Date();
+  const t = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+  const d = document.createElement('div');
+  d.className = 'log-line';
+  d.innerHTML = `<span style="color:${color||'#849495'}">${t}</span><span style="color:${color||'#e5e2e1'}">${text}</span>`;
+  l.appendChild(d);l.scrollTop=l.scrollHeight;
+}
+function runDemo() {
+  const name = document.getElementById('f-name').value || 'Visitor';
+  const btn = document.getElementById('run-btn');
+  btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-[18px]" style="animation:spin 1s linear infinite">refresh</span> Running...';
+  document.querySelectorAll('.node').forEach(n=>{n.classList.remove('active','done')});
+  document.getElementById('log').innerHTML='';
+  log('Workflow triggered by form submission','#00dbe7');
+  steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      if(i>0) document.getElementById(steps[i-1].node).classList.replace('active','done');
+      document.getElementById(s.node).classList.add('active');
+      log(s.log.replace('${name}',name), s.color);
+      if(i===steps.length-1){
+        setTimeout(()=>{
+          document.getElementById(s.node).classList.replace('active','done');
+          log('✅ Workflow complete — 4.1s total execution','#4ade80');
+          btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:\'FILL\' 1">play_arrow</span> Run Again';
+        },600);
+      }
+    }, s.delay);
+  });
+}
+</script>
+</body>
+</html>

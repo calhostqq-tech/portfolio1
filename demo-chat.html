@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chat Agent — MYCAL AI Lab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Geist:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box}
+body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;margin:0;min-height:100vh}
+.glass{background:rgba(10,10,10,0.6);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.08)}
+.tg{background:linear-gradient(135deg,#00dbe7,#d0bcff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.msg-user{background:linear-gradient(135deg,rgba(0,219,231,0.15),rgba(87,27,193,0.15));border:1px solid rgba(0,219,231,0.2);border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:75%;align-self:flex-end;font-size:14px}
+.msg-ai{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:12px 16px;max-width:85%;align-self:flex-start;font-size:14px}
+.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#00dbe7;animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#353434;border-radius:10px}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;background:radial-gradient(circle at 30% 20%,rgba(0,219,231,0.06),transparent 40%),radial-gradient(circle at 70% 80%,rgba(87,27,193,0.08),transparent 40%),#020202;display:flex;flex-direction:column">
+
+  <!-- Header -->
+  <nav class="glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 text-[#849495] hover:text-[#00dbe7] transition-colors">
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+      <span class="font-mono text-[12px]">Back to Portfolio</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00dbe7] to-[#571bc1] flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings:'FILL' 1">smart_toy</span>
+      </div>
+      <div>
+        <div class="font-mono text-[13px] font-bold">MYCAL Chat Agent</div>
+        <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]" style="animation:blink 2s infinite"></span><span class="font-mono text-[10px] text-[#4ade80]">Online</span></div>
+      </div>
+    </div>
+    <div class="font-mono text-[11px] text-[#849495]">GPT-4o · Tool Calling · Memory</div>
+  </nav>
+
+  <!-- Chat -->
+  <div style="flex:1;display:flex;flex-direction:column;max-width:800px;width:100%;margin:0 auto;padding:24px;gap:16px">
+    <div id="messages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:16px;padding-bottom:16px;min-height:400px">
+      <!-- Welcome -->
+      <div class="msg-ai" style="align-self:flex-start">
+        <div class="font-mono text-[11px] text-[#00dbe7] mb-2">MYCAL Agent · GPT-4o</div>
+        <div>Hey! I'm MYCAL's AI Agent. I can help you with:<br/><br/>
+        <span class="font-mono text-[#00dbe7]">→</span> AI & automation questions<br/>
+        <span class="font-mono text-[#00dbe7]">→</span> Project consultation<br/>
+        <span class="font-mono text-[#00dbe7]">→</span> Tech stack recommendations<br/>
+        <span class="font-mono text-[#00dbe7]">→</span> Pricing & availability<br/><br/>
+        What can I help you with?</div>
+      </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div id="suggestions" class="flex flex-wrap gap-2">
+      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#00dbe7] px-4 py-2 rounded-full hover:bg-[#00dbe7]/10 transition-all border border-[#00dbe7]/20">What can you build for me?</button>
+      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">How much does automation cost?</button>
+      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">Tell me about your AI Agent projects</button>
+      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">Are you available for freelance?</button>
+    </div>
+
+    <!-- Input -->
+    <div class="glass rounded-2xl p-3 flex items-end gap-3">
+      <textarea id="input" placeholder="Ask anything..." rows="1" style="flex:1;background:transparent;border:none;outline:none;color:#e5e2e1;font-family:'Geist',sans-serif;font-size:14px;resize:none;max-height:120px;line-height:1.5" onkeydown="handleKey(event)" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button onclick="sendMessage()" class="w-10 h-10 rounded-xl bg-gradient-to-r from-[#00dbe7] to-[#571bc1] flex items-center justify-center hover:opacity-90 hover:scale-95 transition-all flex-shrink-0">
+        <span class="material-symbols-outlined text-white text-[18px]">send</span>
+      </button>
+    </div>
+    <div class="text-center font-mono text-[10px] text-[#849495]">Demo mode — responses are simulated. <a href="mailto:calhostqq@gmail.com" class="text-[#00dbe7] hover:underline">Contact MYCAL</a> for full deployment.</div>
+  </div>
+</div>
+
+<script>
+const responses = {
+  "what can you build": "I specialize in:\n\n→ **AI Agent Systems** — autonomous agents with memory, tool-calling, RAG\n→ **n8n Automation** — workflows connecting 200+ apps, APIs, CRMs\n→ **WhatsApp Bots** — lead gen, customer support, notifications\n→ **Full Stack Apps** — React + Node.js + AI-powered backends\n→ **Meta Ads Analytics** — AI-driven performance dashboards\n\nWhat kind of system do you need?",
+  "cost": "Pricing depends on scope:\n\n→ Simple automation: $300–800\n→ AI chatbot/agent: $500–2000\n→ Full custom system: $1500–5000+\n\nI work on project basis. Fast delivery — most systems ready in 7–14 days.\n\nWant a custom quote? Email: calhostqq@gmail.com",
+  "ai agent": "My AI Agent projects include:\n\n→ **Multi-agent orchestration** — different agents for different tasks\n→ **RAG systems** — agents with access to your company knowledge base\n→ **Tool-calling** — agents that can browse web, query DB, send emails\n→ **WhatsApp AI** — 24/7 customer support bot\n\nAll production-deployed, not just demos.",
+  "freelance": "Yes, I'm available! 🟢\n\n→ **Location:** Kuala Lumpur, Malaysia\n→ **Timezone:** UTC+8\n→ **Availability:** Open for projects\n→ **Response time:** Within 24 hours\n\nBest way to reach me:\n📧 calhostqq@gmail.com\n💬 WhatsApp: +60 11-2897 9012",
+  "default": "That's a great question! For a detailed answer specific to your situation, I'd recommend reaching out directly:\n\n📧 **calhostqq@gmail.com**\n💬 **WhatsApp:** +60 11-2897 9012\n\nI typically respond within a few hours. I can also schedule a free 30-min consultation to discuss your project needs."
+};
+
+function getResponse(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('build') || m.includes('create') || m.includes('make')) return responses['what can you build'];
+  if (m.includes('cost') || m.includes('price') || m.includes('how much') || m.includes('rate')) return responses['cost'];
+  if (m.includes('agent') || m.includes('ai')) return responses['ai agent'];
+  if (m.includes('freelance') || m.includes('available') || m.includes('hire')) return responses['freelance'];
+  return responses['default'];
+}
+
+function addMessage(text, isUser) {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = isUser ? 'msg-user' : 'msg-ai';
+  if (!isUser) {
+    div.innerHTML = `<div class="font-mono text-[11px] text-[#00dbe7] mb-2">MYCAL Agent</div><div>${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br/>')}</div>`;
+  } else {
+    div.textContent = text;
+  }
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg-ai';
+  div.id = 'typing';
+  div.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function sendMessage(text) {
+  const input = document.getElementById('input');
+  const msg = text || input.value.trim();
+  if (!msg) return;
+  document.getElementById('suggestions').style.display = 'none';
+  addMessage(msg, true);
+  input.value = '';
+  input.style.height = 'auto';
+  showTyping();
+  setTimeout(() => {
+    document.getElementById('typing')?.remove();
+    addMessage(getResponse(msg), false);
+  }, 800 + Math.random() * 600);
+}
+
+function sendSuggestion(btn) { sendMessage(btn.textContent); }
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+</script>
+</body>
+</html>

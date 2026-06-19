@@ -51,14 +51,13 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 .sword-container{position:relative;width:100%;height:480px;overflow:hidden;border-radius:30px;background:#050505}
 .sword-container::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 75%,rgba(120,0,255,0.4),transparent 60%);animation:haki-pulse 2s ease-in-out infinite;z-index:1;pointer-events:none}
 .zoro-img{width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;z-index:2;filter:brightness(0.88) saturate(1.4)}
-.haki-effect{position:absolute;inset:0;pointer-events:none;z-index:10}
-.haki-effect svg{position:absolute;width:220px;height:400px;filter:drop-shadow(0 0 15px #00ffff) drop-shadow(0 0 40px #7c3aed);animation:hakiPulse .8s infinite alternate;opacity:.35}
-.haki-effect svg:nth-child(1){left:20%;top:5%}
-.haki-effect svg:nth-child(2){right:15%;top:10%;animation-delay:.4s}
-.haki-effect svg:nth-child(3){left:45%;top:30%;animation-delay:.2s;width:160px;height:300px}
-.bolt{fill:none;stroke:#bfffff;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:500;stroke-dashoffset:500;animation:electric .4s infinite}
-@keyframes electric{to{stroke-dashoffset:0}}
-@keyframes hakiPulse{from{opacity:.25;transform:scale(.9)}to{opacity:.5;transform:scale(1.15)}}
+.haki{position:absolute;inset:0;pointer-events:none;z-index:5}
+.haki svg{position:absolute;width:90px;height:220px;filter:drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 20px #7c3aed);opacity:.65;animation:flash .35s infinite alternate}
+.haki svg:first-child{left:42%;top:20%}
+.haki svg:last-child{right:38%;top:15%;animation-delay:.2s}
+.haki path{fill:none;stroke:#eaffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:180;animation:spark .25s linear infinite}
+@keyframes spark{to{stroke-dashoffset:-180}}
+@keyframes flash{from{opacity:.25;transform:scale(.8)}to{opacity:.9;transform:scale(1.1)}}
 @keyframes haki-pulse{0%,100%{opacity:0.4}50%{opacity:0.85;transform:scale(1.05)}}
 </style>
 </head>
@@ -143,15 +142,12 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
         <div class="hero-frame">
           <div class="sword-container">
             <img src="hero.png" class="zoro-img" alt="MYCAL — Builder vs Complexity"/>
-            <div class="haki-effect">
-              <svg viewBox="0 0 200 400">
-                <path class="bolt" d="M120 0 L70 130 L115 130 L40 280 L100 280 L60 400"/>
+            <div class="haki">
+              <svg viewBox="0 0 100 200">
+                <path d="M60 0 L35 55 L55 55 L20 120 L45 120 L30 200"/>
               </svg>
-              <svg viewBox="0 0 200 400">
-                <path class="bolt" d="M90 20 L140 150 L90 150 L160 300 L90 300 L120 390"/>
-              </svg>
-              <svg viewBox="0 0 200 400">
-                <path class="bolt" d="M100 0 L60 100 L95 100 L50 200 L90 200 L55 300 L85 300 L70 400"/>
+              <svg viewBox="0 0 100 200">
+                <path d="M40 10 L70 70 L50 70 L80 150 L55 150 L70 200"/>
               </svg>
             </div>
           </div>

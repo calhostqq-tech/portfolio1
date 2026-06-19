@@ -52,19 +52,22 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
 .sword-container::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 75%,rgba(120,0,255,0.4),transparent 60%);animation:haki-pulse 2s ease-in-out infinite;z-index:1;pointer-events:none}
 .zoro-img{width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;z-index:2;filter:brightness(0.88) saturate(1.4)}
 .haki{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:visible}
-.haki svg{position:absolute;overflow:visible;animation:hakiFlash .3s infinite alternate}
-/* Pedang kanan — tip kat kanan tengah */
-.haki .br{right:2%;top:28%;width:140px;height:230px;filter:drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 28px #ffd700) drop-shadow(0 0 50px #7c3aed)}
-/* Pedang kiri — tip kat kiri tengah */
-.haki .bl{left:2%;top:28%;width:140px;height:230px;filter:drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 28px #ffd700) drop-shadow(0 0 50px #7c3aed);animation-delay:.15s}
-/* Pedang mulut — atas tengah */
-.haki .bm{left:38%;top:2%;width:95px;height:145px;filter:drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 22px #fff) drop-shadow(0 0 40px #7c3aed);animation-delay:.08s}
-/* Outer tebal hitam */
-.haki .out{fill:none;stroke:#0a0015;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;animation:hakiDraw .28s linear infinite}
-/* Inner tipis putih/emas */
-.haki .inn{fill:none;stroke:#fff9e0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;animation:hakiDraw .28s linear infinite}
-@keyframes hakiDraw{0%{stroke-dashoffset:400}100%{stroke-dashoffset:-400}}
-@keyframes hakiFlash{from{opacity:.5}to{opacity:1}}
+.haki svg{position:absolute;overflow:visible;animation:hakiFlash .25s infinite alternate}
+/* Pedang KANAN */
+.haki .br{right:0;top:25%;width:160px;height:280px;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #c084fc) drop-shadow(0 0 30px #4a0090) drop-shadow(0 0 50px #1a003a)}
+/* Pedang KIRI — mirror */
+.haki .bl{left:0;top:25%;width:160px;height:280px;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #c084fc) drop-shadow(0 0 30px #4a0090) drop-shadow(0 0 50px #1a003a);animation-delay:.13s;transform:scaleX(-1)}
+/* Pedang MULUT — atas */
+.haki .bm{left:35%;top:0;width:110px;height:170px;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #c084fc) drop-shadow(0 0 30px #4a0090);animation-delay:.07s}
+/* Main trunk — tebal gelap */
+.haki .t{fill:none;stroke:#0d0018;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:500;animation:hakiDraw .22s linear infinite}
+/* Glow layer — nipis cerah */
+.haki .g{fill:none;stroke:#e0b4ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:500;animation:hakiDraw .22s linear infinite}
+/* Cabang — lebih nipis */
+.haki .b{fill:none;stroke:#0d0018;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:200;animation:hakiDraw .22s linear infinite .05s}
+.haki .bg{fill:none;stroke:#e0b4ff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:200;animation:hakiDraw .22s linear infinite .05s}
+@keyframes hakiDraw{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-500}}
+@keyframes hakiFlash{from{opacity:.55}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -149,28 +152,52 @@ body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;overflow-x:
           <div class="sword-container">
             <img src="hero.png" class="zoro-img" alt="MYCAL — Builder vs Complexity"/>
             <div class="haki">
-              <!-- Pedang KANAN — crack keluar ke kanan dari tip pedang -->
-              <svg class="br" viewBox="0 0 140 230">
-                <path class="out" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
-                <path class="inn" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
+              <!-- PEDANG KANAN — crack organik dari tip ke luar kanan -->
+              <svg class="br" viewBox="0 0 160 280">
+                <!-- Main trunk -->
+                <path class="t" d="M0,140 L22,118 L14,142 L42,120 L30,148 L62,124 L48,155 L85,130 L70,162 L108,138 L92,170 L135,145 L120,178 L155,158"/>
+                <path class="g" d="M0,140 L22,118 L14,142 L42,120 L30,148 L62,124 L48,155 L85,130 L70,162 L108,138 L92,170 L135,145 L120,178 L155,158"/>
+                <!-- Cabang atas -->
+                <path class="b" d="M42,120 L55,95 L48,78 L68,60 L58,45"/>
+                <path class="bg" d="M42,120 L55,95 L48,78 L68,60 L58,45"/>
+                <!-- Cabang kecil -->
+                <path class="b" d="M68,60 L82,48 L76,35"/>
+                <path class="bg" d="M68,60 L82,48 L76,35"/>
                 <!-- Cabang bawah -->
-                <path class="out" d="M55 135 L70 170 L50 165 L65 210"/>
-                <path class="inn" d="M55 135 L70 170 L50 165 L65 210"/>
+                <path class="b" d="M85,130 L98,160 L88,178 L105,195 L95,215"/>
+                <path class="bg" d="M85,130 L98,160 L88,178 L105,195 L95,215"/>
+                <!-- Micro crack -->
+                <path class="b" d="M30,148 L18,168 L25,182"/>
+                <path class="bg" d="M30,148 L18,168 L25,182"/>
               </svg>
-              <!-- Pedang KIRI — flip, crack keluar ke kiri -->
-              <svg class="bl" viewBox="0 0 140 230" style="transform:scaleX(-1)">
-                <path class="out" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
-                <path class="inn" d="M5 115 L45 90 L30 120 L75 95 L55 135 L100 108 L85 148 L130 125"/>
-                <path class="out" d="M55 135 L70 170 L50 165 L65 210"/>
-                <path class="inn" d="M55 135 L70 170 L50 165 L65 210"/>
+
+              <!-- PEDANG KIRI — mirror dari kanan -->
+              <svg class="bl" viewBox="0 0 160 280">
+                <path class="t" d="M0,140 L22,118 L14,142 L42,120 L30,148 L62,124 L48,155 L85,130 L70,162 L108,138 L92,170 L135,145 L120,178 L155,158"/>
+                <path class="g" d="M0,140 L22,118 L14,142 L42,120 L30,148 L62,124 L48,155 L85,130 L70,162 L108,138 L92,170 L135,145 L120,178 L155,158"/>
+                <path class="b" d="M42,120 L55,95 L48,78 L68,60 L58,45"/>
+                <path class="bg" d="M42,120 L55,95 L48,78 L68,60 L58,45"/>
+                <path class="b" d="M68,60 L82,48 L76,35"/>
+                <path class="bg" d="M68,60 L82,48 L76,35"/>
+                <path class="b" d="M85,130 L98,160 L88,178 L105,195 L95,215"/>
+                <path class="bg" d="M85,130 L98,160 L88,178 L105,195 L95,215"/>
+                <path class="b" d="M30,148 L18,168 L25,182"/>
+                <path class="bg" d="M30,148 L18,168 L25,182"/>
               </svg>
-              <!-- Pedang MULUT — crack naik ke atas -->
-              <svg class="bm" viewBox="0 0 95 145">
-                <path class="out" d="M47 140 L25 100 L48 105 L18 55 L44 65 L28 20 L50 30 L40 0"/>
-                <path class="inn" d="M47 140 L25 100 L48 105 L18 55 L44 65 L28 20 L50 30 L40 0"/>
+
+              <!-- PEDANG MULUT — crack naik organik -->
+              <svg class="bm" viewBox="0 0 110 170">
+                <path class="t" d="M55,170 L35,135 L50,138 L25,98 L45,105 L22,65 L42,72 L25,35 L48,42 L35,8 L55,15 L48,0"/>
+                <path class="g" d="M55,170 L35,135 L50,138 L25,98 L45,105 L22,65 L42,72 L25,35 L48,42 L35,8 L55,15 L48,0"/>
                 <!-- Cabang kiri -->
-                <path class="out" d="M28 20 L10 5 L18 15"/>
-                <path class="inn" d="M28 20 L10 5 L18 15"/>
+                <path class="b" d="M25,98 L8,82 L15,68 L5,52"/>
+                <path class="bg" d="M25,98 L8,82 L15,68 L5,52"/>
+                <!-- Cabang kanan -->
+                <path class="b" d="M42,72 L62,58 L72,42 L65,28"/>
+                <path class="bg" d="M42,72 L62,58 L72,42 L65,28"/>
+                <!-- Micro -->
+                <path class="b" d="M25,35 L10,22 L18,12"/>
+                <path class="bg" d="M25,35 L10,22 L18,12"/>
               </svg>
             </div>
           </div>

@@ -1,139 +1,255 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chat Agent — MYCAL AI Lab</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Geist:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MYCAL Intelligence — AI Business Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box}
-body{background:#020202;color:#e5e2e1;font-family:'Geist',sans-serif;margin:0;min-height:100vh}
-.glass{background:rgba(10,10,10,0.6);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{background:#020202;color:#e5e2e1;font-family:'Geist',system-ui,sans-serif}
+a{text-decoration:none;color:inherit}
+:root{--c:#00dbe7;--p:#571bc1;--l:#d0bcff;--g:#4ade80;--t:#e5e2e1;--m:#849495;--b:rgba(255,255,255,.08);--s:rgba(255,255,255,.03);--ff:'Sora',sans-serif;--fm:'JetBrains Mono',monospace}
 .tg{background:linear-gradient(135deg,#00dbe7,#d0bcff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.msg-user{background:linear-gradient(135deg,rgba(0,219,231,0.15),rgba(87,27,193,0.15));border:1px solid rgba(0,219,231,0.2);border-radius:18px 18px 4px 18px;padding:12px 16px;max-width:75%;align-self:flex-end;font-size:14px}
-.msg-ai{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:12px 16px;max-width:85%;align-self:flex-start;font-size:14px}
-.typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#00dbe7;animation:blink 1.2s infinite}
-.typing span:nth-child(2){animation-delay:.2s}
-.typing span:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#353434;border-radius:10px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;padding:0 20px;gap:14px;background:rgba(2,2,2,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--b)}
+.n-logo{font-family:var(--ff);font-weight:800;font-size:16px;letter-spacing:-.02em;margin-right:auto}
+.n-logo b{color:var(--c)}.n-logo em{font-style:normal;font-weight:400;color:var(--m)}
+.badge{display:flex;align-items:center;gap:5px;font-family:var(--fm);font-size:10px;padding:4px 10px;border-radius:20px;color:var(--g);background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2)}
+.bd{width:5px;height:5px;border-radius:50%;background:var(--g);animation:pulse 2s ease-in-out infinite}
+.n-meta{font-family:var(--fm);font-size:10px;color:var(--m)}
+.n-back{font-family:var(--fm);font-size:11px;color:var(--m);display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid var(--b);transition:all .2s}
+.n-back:hover{color:var(--t);border-color:rgba(255,255,255,.18)}
+
+/* APP LAYOUT */
+.app{display:grid;grid-template-columns:296px 1fr;height:calc(100vh - 56px);margin-top:56px}
+
+/* SIDEBAR */
+.sb{border-right:1px solid var(--b);overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:22px}
+.sb::-webkit-scrollbar{display:none}
+.s-lbl{font-family:var(--fm);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--m);margin-bottom:11px}
+.s-title{font-family:var(--ff);font-weight:800;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
+.s-desc{font-size:12px;color:var(--m);line-height:1.65}
+.caps{display:flex;flex-wrap:wrap;gap:5px}
+.cap{font-family:var(--fm);font-size:10px;padding:4px 9px;border-radius:7px;border:1px solid var(--b);background:var(--s);color:var(--m);transition:all .2s;cursor:default}
+.cap:hover{border-color:var(--c);color:var(--c)}
+.cap.on{border-color:rgba(0,219,231,.28);color:var(--c);background:rgba(0,219,231,.07)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stat{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px}
+.st-n{font-family:var(--ff);font-size:20px;font-weight:800;line-height:1}
+.st-l{font-family:var(--fm);font-size:9px;color:var(--m);margin-top:3px}
+.convs{display:flex;flex-direction:column;gap:2px}
+.cv{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .2s}
+.cv:hover{background:rgba(255,255,255,.04)}
+.cv.on{background:rgba(0,219,231,.06);border:1px solid rgba(0,219,231,.12)}
+.cv-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cv-t{font-size:12px;color:var(--m)}
+.promo{background:linear-gradient(135deg,rgba(0,219,231,.06),rgba(87,27,193,.08));border:1px solid rgba(0,219,231,.18);border-radius:12px;padding:14px}
+.promo h4{font-family:var(--ff);font-weight:700;font-size:13px;margin-bottom:5px}
+.promo p{font-size:11px;color:var(--m);margin-bottom:10px;line-height:1.55}
+.promo a{display:block;text-align:center;font-family:var(--fm);font-size:11px;padding:8px;border-radius:8px;background:var(--c);color:#020202;font-weight:700;transition:opacity .2s}
+.promo a:hover{opacity:.88}
+
+/* CHAT */
+.chat{display:flex;flex-direction:column;overflow:hidden}
+.ch-hdr{padding:14px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:12px;background:rgba(2,2,2,.4);flex-shrink:0}
+.ch-av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--c),var(--p));display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.ch-name{font-family:var(--ff);font-weight:700;font-size:14px}
+.ch-sub{font-family:var(--fm);font-size:10px;color:var(--m)}
+.ch-tools{margin-left:auto;display:flex;gap:5px}
+.ch-t{font-family:var(--fm);font-size:9px;padding:3px 7px;border-radius:5px;border:1px solid var(--b);color:var(--m);background:var(--s)}
+
+/* MESSAGES */
+.msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:#252525;border-radius:10px}
+.msg{display:flex;gap:8px;animation:mIn .3s ease}
+.msg.ai{align-self:flex-start;max-width:90%}
+.msg.user{align-self:flex-end;max-width:72%;flex-direction:row-reverse}
+@keyframes mIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.av{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--c),var(--p));display:flex;align-items:center;justify-content:center;font-family:var(--ff);font-weight:800;font-size:10px;color:#fff;flex-shrink:0;margin-top:2px}
+.bub{padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.65}
+.bub.ai{background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:3px 14px 14px 14px}
+.bub.user{background:linear-gradient(135deg,rgba(0,219,231,.16),rgba(87,27,193,.2));border:1px solid rgba(0,219,231,.18);border-radius:14px 3px 14px 14px}
+.bub strong{color:var(--t);font-weight:600}
+.bub .ar{color:var(--c);font-family:var(--fm);font-size:12px}
+.bub code{font-family:var(--fm);font-size:11px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px;color:var(--l)}
+.ts{font-family:var(--fm);font-size:9px;color:var(--m);padding:0 2px;margin-top:5px}
+.ts.r{text-align:right}
+.tw{display:flex;gap:8px;align-self:flex-start;animation:mIn .3s ease}
+.tbub{padding:12px 15px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:3px 14px 14px 14px;display:flex;gap:4px;align-items:center}
+.td{width:5px;height:5px;border-radius:50%;background:var(--m);animation:bounce .7s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.12s}.td:nth-child(3){animation-delay:.24s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* SUGGESTIONS */
+.sugs{padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--b);flex-shrink:0}
+.sug{font-family:var(--fm);font-size:10px;padding:6px 12px;border-radius:7px;border:1px solid var(--b);background:var(--s);color:var(--m);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sug:hover{border-color:var(--c);color:var(--c);background:rgba(0,219,231,.07)}
+
+/* INPUT */
+.inp-area{padding:14px 20px;border-top:1px solid var(--b);flex-shrink:0}
+.inp-wrap{display:flex;align-items:flex-end;gap:9px;background:var(--s);border:1px solid var(--b);border-radius:12px;padding:9px 12px;transition:border .2s}
+.inp-wrap:focus-within{border-color:rgba(0,219,231,.3)}
+textarea{flex:1;background:transparent;border:none;outline:none;color:var(--t);font-family:'Geist',sans-serif;font-size:13px;resize:none;max-height:100px;line-height:1.5}
+textarea::placeholder{color:var(--m)}
+.send-btn{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--c),var(--p));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.send-btn:hover{transform:scale(.93);opacity:.9}
+.inp-note{text-align:center;font-family:var(--fm);font-size:9px;color:var(--m);margin-top:8px}
+.inp-note a{color:var(--c)}
+
+@media(max-width:760px){.app{grid-template-columns:1fr}.sb{display:none}}
 </style>
 </head>
 <body>
-<div style="min-height:100vh;background:radial-gradient(circle at 30% 20%,rgba(0,219,231,0.06),transparent 40%),radial-gradient(circle at 70% 80%,rgba(87,27,193,0.08),transparent 40%),#020202;display:flex;flex-direction:column">
 
-  <!-- Header -->
-  <nav class="glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2 text-[#849495] hover:text-[#00dbe7] transition-colors">
-      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-      <span class="font-mono text-[12px]">Back to Portfolio</span>
-    </a>
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00dbe7] to-[#571bc1] flex items-center justify-center">
-        <span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings:'FILL' 1">smart_toy</span>
+<nav>
+  <div class="n-logo">MY<b>CAL</b> <em>Intelligence</em></div>
+  <div class="badge"><div class="bd"></div>Live Agent</div>
+  <span class="n-meta">GPT-4o · Memory · Tool Calling</span>
+  <a href="index.html" class="n-back">
+    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+    Portfolio
+  </a>
+</nav>
+
+<div class="app">
+  <aside class="sb">
+    <div>
+      <div class="s-lbl">AI Business Agent</div>
+      <div class="s-title">MYCAL <span class="tg">Intelligence</span></div>
+      <div class="s-desc">Trained on MYCAL's full service catalog. Handles consultations, qualifies leads, and routes projects automatically — 24 hours a day.</div>
+    </div>
+    <div>
+      <div class="s-lbl">Active Capabilities</div>
+      <div class="caps">
+        <span class="cap on">⚡ Tool Calling</span>
+        <span class="cap on">🧠 Long Memory</span>
+        <span class="cap on">🔄 Multi-step</span>
+        <span class="cap">🌐 Web Search</span>
+        <span class="cap">📊 Data Analysis</span>
+        <span class="cap">💬 WhatsApp API</span>
+        <span class="cap">📧 Email Send</span>
+        <span class="cap">📁 File Reading</span>
       </div>
+    </div>
+    <div>
+      <div class="s-lbl">Performance</div>
+      <div class="stats">
+        <div class="stat"><div class="st-n tg">24/7</div><div class="st-l">UPTIME</div></div>
+        <div class="stat"><div class="st-n" style="color:var(--g)">&lt;1s</div><div class="st-l">RESPONSE</div></div>
+        <div class="stat"><div class="st-n" style="color:var(--l)">98%</div><div class="st-l">ACCURACY</div></div>
+        <div class="stat"><div class="st-n" style="color:var(--c);font-size:14px">GPT-4o</div><div class="st-l">ENGINE</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="s-lbl">Recent Sessions</div>
+      <div class="convs">
+        <div class="cv on"><div class="cv-dot" style="background:var(--c)"></div><div class="cv-t">Business automation · Now</div></div>
+        <div class="cv"><div class="cv-dot" style="background:var(--m)"></div><div class="cv-t">WhatsApp bot deployment</div></div>
+        <div class="cv"><div class="cv-dot" style="background:var(--m)"></div><div class="cv-t">Website pricing · RM 1,500</div></div>
+        <div class="cv"><div class="cv-dot" style="background:var(--m)"></div><div class="cv-t">n8n workflow consultation</div></div>
+        <div class="cv"><div class="cv-dot" style="background:var(--m)"></div><div class="cv-t">Meta Ads analysis · June</div></div>
+      </div>
+    </div>
+    <div class="promo">
+      <h4>Want this for your business?</h4>
+      <p>Custom AI agent deployed on your website or WhatsApp. Live in 7 days. RM 1,500+</p>
+      <a href="https://wa.me/601128979012?text=I%20want%20an%20AI%20agent%20for%20my%20business" target="_blank">Get Started →</a>
+    </div>
+  </aside>
+
+  <div class="chat">
+    <div class="ch-hdr">
+      <div class="ch-av">M</div>
       <div>
-        <div class="font-mono text-[13px] font-bold">MYCAL Chat Agent</div>
-        <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]" style="animation:blink 2s infinite"></span><span class="font-mono text-[10px] text-[#4ade80]">Online</span></div>
+        <div class="ch-name">MYCAL Business Agent</div>
+        <div class="ch-sub">GPT-4o · Memory on · Tool calling active · Kuala Lumpur, UTC+8</div>
       </div>
-    </div>
-    <div class="font-mono text-[11px] text-[#849495]">GPT-4o · Tool Calling · Memory</div>
-  </nav>
-
-  <!-- Chat -->
-  <div style="flex:1;display:flex;flex-direction:column;max-width:800px;width:100%;margin:0 auto;padding:24px;gap:16px">
-    <div id="messages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:16px;padding-bottom:16px;min-height:400px">
-      <!-- Welcome -->
-      <div class="msg-ai" style="align-self:flex-start">
-        <div class="font-mono text-[11px] text-[#00dbe7] mb-2">MYCAL Agent · GPT-4o</div>
-        <div>Hey! I'm MYCAL's AI Agent. I can help you with:<br/><br/>
-        <span class="font-mono text-[#00dbe7]">→</span> AI & automation questions<br/>
-        <span class="font-mono text-[#00dbe7]">→</span> Project consultation<br/>
-        <span class="font-mono text-[#00dbe7]">→</span> Tech stack recommendations<br/>
-        <span class="font-mono text-[#00dbe7]">→</span> Pricing & availability<br/><br/>
-        What can I help you with?</div>
+      <div class="ch-tools">
+        <span class="ch-t">🔍 Web</span>
+        <span class="ch-t">📊 Data</span>
+        <span class="ch-t">💬 WhatsApp</span>
+        <span class="ch-t">📧 Email</span>
       </div>
     </div>
 
-    <!-- Suggestions -->
-    <div id="suggestions" class="flex flex-wrap gap-2">
-      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#00dbe7] px-4 py-2 rounded-full hover:bg-[#00dbe7]/10 transition-all border border-[#00dbe7]/20">What can you build for me?</button>
-      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">How much does automation cost?</button>
-      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">Tell me about your AI Agent projects</button>
-      <button onclick="sendSuggestion(this)" class="glass font-mono text-[11px] text-[#849495] px-4 py-2 rounded-full hover:bg-white/5 transition-all">Are you available for freelance?</button>
+    <div class="msgs" id="msgs"></div>
+
+    <div class="sugs" id="sugs">
+      <button class="sug" onclick="qs(this)">What can you automate for me?</button>
+      <button class="sug" onclick="qs(this)">How much does it cost?</button>
+      <button class="sug" onclick="qs(this)">Show me your live projects</button>
+      <button class="sug" onclick="qs(this)">Are you available to hire?</button>
     </div>
 
-    <!-- Input -->
-    <div class="glass rounded-2xl p-3 flex items-end gap-3">
-      <textarea id="input" placeholder="Ask anything..." rows="1" style="flex:1;background:transparent;border:none;outline:none;color:#e5e2e1;font-family:'Geist',sans-serif;font-size:14px;resize:none;max-height:120px;line-height:1.5" onkeydown="handleKey(event)" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-      <button onclick="sendMessage()" class="w-10 h-10 rounded-xl bg-gradient-to-r from-[#00dbe7] to-[#571bc1] flex items-center justify-center hover:opacity-90 hover:scale-95 transition-all flex-shrink-0">
-        <span class="material-symbols-outlined text-white text-[18px]">send</span>
-      </button>
+    <div class="inp-area">
+      <div class="inp-wrap">
+        <textarea id="inp" rows="1" placeholder="Ask about services, pricing, timelines..." onkeydown="kd(event)" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+        <button class="send-btn" onclick="send()">
+          <svg width="14" height="14" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+        </button>
+      </div>
+      <div class="inp-note">Demo mode · Responses simulated · <a href="mailto:calhostqq@gmail.com">calhostqq@gmail.com</a> for live deployment</div>
     </div>
-    <div class="text-center font-mono text-[10px] text-[#849495]">Demo mode — responses are simulated. <a href="mailto:calhostqq@gmail.com" class="text-[#00dbe7] hover:underline">Contact MYCAL</a> for full deployment.</div>
   </div>
 </div>
 
 <script>
-const responses = {
-  "what can you build": "I specialize in:\n\n→ **AI Agent Systems** — autonomous agents with memory, tool-calling, RAG\n→ **n8n Automation** — workflows connecting 200+ apps, APIs, CRMs\n→ **WhatsApp Bots** — lead gen, customer support, notifications\n→ **Full Stack Apps** — React + Node.js + AI-powered backends\n→ **Meta Ads Analytics** — AI-driven performance dashboards\n\nWhat kind of system do you need?",
-  "cost": "Pricing depends on scope:\n\n→ Simple automation: $300–800\n→ AI chatbot/agent: $500–2000\n→ Full custom system: $1500–5000+\n\nI work on project basis. Fast delivery — most systems ready in 7–14 days.\n\nWant a custom quote? Email: calhostqq@gmail.com",
-  "ai agent": "My AI Agent projects include:\n\n→ **Multi-agent orchestration** — different agents for different tasks\n→ **RAG systems** — agents with access to your company knowledge base\n→ **Tool-calling** — agents that can browse web, query DB, send emails\n→ **WhatsApp AI** — 24/7 customer support bot\n\nAll production-deployed, not just demos.",
-  "freelance": "Yes, I'm available! 🟢\n\n→ **Location:** Kuala Lumpur, Malaysia\n→ **Timezone:** UTC+8\n→ **Availability:** Open for projects\n→ **Response time:** Within 24 hours\n\nBest way to reach me:\n📧 calhostqq@gmail.com\n💬 WhatsApp: +60 11-2897 9012",
-  "default": "That's a great question! For a detailed answer specific to your situation, I'd recommend reaching out directly:\n\n📧 **calhostqq@gmail.com**\n💬 **WhatsApp:** +60 11-2897 9012\n\nI typically respond within a few hours. I can also schedule a free 30-min consultation to discuss your project needs."
+const R={
+  auto:`I specialize in <strong>4 production-grade automation systems</strong>:\n\n<span class="ar">→</span> <strong>AI Agent Systems</strong> — Autonomous agents with memory, tool-calling, and RAG that handle complex tasks without human input\n<span class="ar">→</span> <strong>WhatsApp Automation</strong> — Bot that qualifies leads, books appointments, sends reminders, and handles FAQs — running 24/7\n<span class="ar">→</span> <strong>n8n Workflow Engine</strong> — Connect 200+ apps, automate data pipelines, eliminate repetitive work across CRM, email, Sheets, and more\n<span class="ar">→</span> <strong>Analytics Systems</strong> — Turn raw ad and business data into automated dashboards, weekly reports, and AI-powered recommendations\n\nAll systems are <strong>production-deployed</strong> — not just demos. Which fits your situation?`,
+  cost:`Pricing is fixed-scope, no hourly surprises:\n\n<span class="ar">→</span> <strong>WhatsApp Bot</strong> — RM 500–1,500\n<span class="ar">→</span> <strong>n8n Automation</strong> — RM 800–2,000\n<span class="ar">→</span> <strong>AI Agent System</strong> — RM 1,500–5,000\n<span class="ar">→</span> <strong>Full Website</strong> — RM 800–3,000\n<span class="ar">→</span> <strong>Full-stack + AI</strong> — RM 3,000–10,000+\n\nDelivery: <strong>7–14 days</strong> for most systems. Complex integrations: 3–4 weeks.\n14-day support window included in every project.\n\n📱 <strong>+60 11-2897 9012</strong> · 📧 <strong>calhostqq@gmail.com</strong>`,
+  projects:`MYCAL's active production deployments:\n\n<span class="ar">→</span> <strong>Meta Ads Intelligence</strong> — AI audits ad spend daily, flags wasted budget, generates optimization plans. Used by 3 agencies in KL.\n<span class="ar">→</span> <strong>WhatsApp Lead Engine</strong> — Handles 300+ inquiries/day for a retail client. Qualifies, tags, and routes leads to the right team member.\n<span class="ar">→</span> <strong>Auto-Invoice System</strong> — n8n workflow: generates PDF → sends email → tracks payment → chases overdue automatically.\n<span class="ar">→</span> <strong>AI Support Agent</strong> — 24/7 on 3 e-commerce stores. Handles returns, tracking queries, product questions with 98% resolution.\n<span class="ar">→</span> <strong>Competitor Price Monitor</strong> — Scrapes 50+ competitor SKUs daily, alerts business owner on WhatsApp when pricing gaps appear.\n\nStack: <code>Python</code> <code>Node.js</code> <code>n8n</code> <code>OpenAI API</code> <code>WhatsApp Business API</code>`,
+  hire:`Available for new projects right now. 🟢\n\n<span class="ar">→</span> <strong>Location</strong>: Kuala Lumpur, Malaysia (UTC+8)\n<span class="ar">→</span> <strong>Availability</strong>: Open for projects and monthly retainers\n<span class="ar">→</span> <strong>Response time</strong>: Within 4 hours on weekdays\n<span class="ar">→</span> <strong>Model</strong>: Fixed-scope, fixed-price — no surprise invoices\n<span class="ar">→</span> <strong>After-launch</strong>: 14-day support included on every project\n\nBest way to reach MYCAL:\n💬 <strong>WhatsApp: +60 11-2897 9012</strong> (fastest)\n📧 <strong>calhostqq@gmail.com</strong>`,
+  default:`Good question. For the most accurate answer — especially around technical fit and pricing — connecting directly with MYCAL is best.\n\n📧 <strong>calhostqq@gmail.com</strong>\n💬 <strong>WhatsApp: +60 11-2897 9012</strong>\n\nMYCAL replies within <strong>2–4 hours</strong> and offers a free 30-minute consultation for all new projects. No commitment, just a focused conversation about what you need built.`
 };
 
-function getResponse(msg) {
-  const m = msg.toLowerCase();
-  if (m.includes('build') || m.includes('create') || m.includes('make')) return responses['what can you build'];
-  if (m.includes('cost') || m.includes('price') || m.includes('how much') || m.includes('rate')) return responses['cost'];
-  if (m.includes('agent') || m.includes('ai')) return responses['ai agent'];
-  if (m.includes('freelance') || m.includes('available') || m.includes('hire')) return responses['freelance'];
-  return responses['default'];
+function reply(m){
+  const t=m.toLowerCase();
+  if(t.match(/automat|build|creat|workflow|n8n|bot|system/))return R.auto;
+  if(t.match(/cost|pric|rate|much|rm|budget|fee/))return R.cost;
+  if(t.match(/project|work|portfolio|example|show|client|live/))return R.projects;
+  if(t.match(/hire|avail|freelanc|contact|reach|consult|talk/))return R.hire;
+  return R.default;
 }
 
-function addMessage(text, isUser) {
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = isUser ? 'msg-user' : 'msg-ai';
-  if (!isUser) {
-    div.innerHTML = `<div class="font-mono text-[11px] text-[#00dbe7] mb-2">MYCAL Agent</div><div>${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br/>')}</div>`;
+function ts(){const d=new Date();return`${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`}
+
+function addMsg(text,type){
+  const m=document.getElementById('msgs'),d=document.createElement('div');
+  d.className=`msg ${type}`;
+  const t=`<span class="ar">→</span>`;
+  const html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br/>');
+  if(type==='ai'){
+    d.innerHTML=`<div class="av">M</div><div><div class="bub ai">${html}</div><div class="ts">${ts()} · MYCAL Agent</div></div>`;
   } else {
-    div.textContent = text;
+    d.innerHTML=`<div><div class="bub user">${text}</div><div class="ts r">${ts()} · You</div></div>`;
   }
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
 
-function showTyping() {
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = 'msg-ai';
-  div.id = 'typing';
-  div.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+function showTyping(){
+  const m=document.getElementById('msgs'),d=document.createElement('div');
+  d.id='typ';d.className='tw';
+  d.innerHTML=`<div class="av">M</div><div class="tbub"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
 
-function sendMessage(text) {
-  const input = document.getElementById('input');
-  const msg = text || input.value.trim();
-  if (!msg) return;
-  document.getElementById('suggestions').style.display = 'none';
-  addMessage(msg, true);
-  input.value = '';
-  input.style.height = 'auto';
+function send(txt){
+  const i=document.getElementById('inp'),msg=txt||i.value.trim();
+  if(!msg)return;
+  document.getElementById('sugs').style.display='none';
+  addMsg(msg,'user');i.value='';i.style.height='auto';
   showTyping();
-  setTimeout(() => {
-    document.getElementById('typing')?.remove();
-    addMessage(getResponse(msg), false);
-  }, 800 + Math.random() * 600);
+  setTimeout(()=>{document.getElementById('typ')?.remove();addMsg(reply(msg),'ai')},700+Math.random()*700);
 }
+function qs(b){send(b.textContent);b.remove()}
+function kd(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
 
-function sendSuggestion(btn) { sendMessage(btn.textContent); }
-function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+addMsg(`Hey! 👋 I'm MYCAL's AI business agent, powered by <strong>GPT-4o</strong>.\n\nI can help you with:\n<span class="ar">→</span> <strong>Automation</strong> — what's possible for your business\n<span class="ar">→</span> <strong>Pricing</strong> — honest estimates, no surprises\n<span class="ar">→</span> <strong>Projects</strong> — live examples and case studies\n<span class="ar">→</span> <strong>Consultation</strong> — book a free 30-min call\n\nWhat's on your mind?`,'ai');
 </script>
 </body>
 </html>
